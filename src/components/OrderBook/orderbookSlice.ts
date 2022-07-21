@@ -165,15 +165,23 @@ export const orderbookSlice = createSlice({
       state.asks = addDepths(updatedAsks, current(state).maxTotalAsks);
     },
     addExistingState: (state, { payload }) => {
-      const rawBids: number[][] = payload.bids;
-      const rawAsks: number[][] = payload.asks;
+      const rawBids: number[][] = payload.data
+        .map((item: any) =>
+          item.side === "Buy" ? [item.price, item.size] : null
+        )
+        .filter((el: any) => el !== null);
+      const rawAsks: number[][] = payload.data
+        .map((item: any) =>
+          item.side === "Sell" ? [item.price, item.size] : null
+        )
+        .filter((el: any) => el !== null)
+        .reverse();
       const bids: number[][] = addTotalSums(
         groupByTicketSize(rawBids, current(state).groupingSize)
       );
       const asks: number[][] = addTotalSums(
         groupByTicketSize(rawAsks, current(state).groupingSize)
       );
-
       state.market = payload["product_id"];
       state.rawBids = rawBids;
       state.rawAsks = rawAsks;

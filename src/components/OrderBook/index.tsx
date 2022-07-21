@@ -59,10 +59,24 @@ const OrderBook: FunctionComponent<OrderBookProps> = ({
 
   const processMessages = (event: { data: string }) => {
     const response = JSON.parse(event.data);
-    if (response.numLevels) {
+    if (response.action === "partial") {
       dispatch(addExistingState(response));
+    } else if (response.action === "insert") {
+      let delta = {
+        bids: response.data
+          .map((item: any) =>
+            item.side === "Buy" ? [item.price, item.size] : null
+          )
+          .filter((el: any) => el !== null),
+        asks: response.data
+          .map((item: any) =>
+            item.side === "Sell" ? [item.price, item.size] : null
+          )
+          .filter((el: any) => el !== null),
+      };
+      process(delta);
     } else {
-      process(response);
+      return response;
     }
   };
 
@@ -90,16 +104,14 @@ const OrderBook: FunctionComponent<OrderBookProps> = ({
   const process = (data: Delta) => {
     if (data?.bids?.length > 0) {
       currentBids = [...currentBids, ...data.bids];
-
       if (currentBids.length > ORDERBOOK_LEVELS) {
         dispatch(addBids(currentBids));
         currentBids = [];
         currentBids.length = 0;
       }
     }
-    if (data?.asks?.length >= 0) {
+    if (data?.asks?.length > 0) {
       currentAsks = [...currentAsks, ...data.asks];
-
       if (currentAsks.length > ORDERBOOK_LEVELS) {
         dispatch(addAsks(currentAsks));
         currentAsks = [];
@@ -159,26 +171,25 @@ const OrderBook: FunctionComponent<OrderBookProps> = ({
   };
 
   return (
-    <></>
-    // <Container>
-    //   {bids.length && asks.length ? (
-    //     <>
-    //       <TableContainer>
-    //         {windowWidth > MOBILE_WIDTH && (
-    //           <TitleRow windowWidth={windowWidth} reversedFieldsOrder={false} />
-    //         )}
-    //         <div>{buildPriceLevels(bids, OrderType.BIDS)}</div>
-    //       </TableContainer>
-    //       <Spread bids={bids} asks={asks} />
-    //       <TableContainer>
-    //         <TitleRow windowWidth={windowWidth} reversedFieldsOrder={true} />
-    //         <div>{buildPriceLevels(asks, OrderType.ASKS)}</div>
-    //       </TableContainer>
-    //     </>
-    //   ) : (
-    //     <Loader />
-    //   )}
-    // </Container>
+    <Container>
+      {bids.length && asks.length ? (
+        <>
+          <TableContainer>
+            {windowWidth > MOBILE_WIDTH && (
+              <TitleRow windowWidth={windowWidth} reversedFieldsOrder={false} />
+            )}
+            <div>{buildPriceLevels(bids, OrderType.BIDS)}</div>
+          </TableContainer>
+          <Spread bids={bids} asks={asks} />
+          <TableContainer>
+            <TitleRow windowWidth={windowWidth} reversedFieldsOrder={true} />
+            <div>{buildPriceLevels(asks, OrderType.ASKS)}</div>
+          </TableContainer>
+        </>
+      ) : (
+        <Loader />
+      )}
+    </Container>
   );
 };
 

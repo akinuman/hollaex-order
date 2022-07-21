@@ -8,8 +8,8 @@ import { clearOrdersState } from "./components/OrderBook/orderbookSlice";
 import { useAppDispatch } from "./hooks";
 
 export const ProductIds = {
-  XBTUSD: "orderBookL2:XBTUSD",
-  ETHUSD: "orderBookL2:ETHUSD",
+  XBTUSD: "orderBookL2_25:XBTUSD",
+  ETHUSD: "orderBookL2_25:ETHUSD",
 };
 
 function App() {
@@ -79,7 +79,6 @@ function App() {
 
   const toggleProductId = (): void => {
     dispatch(clearOrdersState());
-    console.log("akun");
     setProductId((cur) =>
       cur === ProductIds.XBTUSD ? ProductIds.ETHUSD : ProductIds.XBTUSD
     );
