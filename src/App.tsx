@@ -93,7 +93,7 @@ function App() {
       {isPageVisible ? (
         <>
           <GlobalStyle />
-          {/* <Header options={options[productId]} /> */}
+          <Header />
           <OrderBook
             windowWidth={windowWidth}
             productId={productId}

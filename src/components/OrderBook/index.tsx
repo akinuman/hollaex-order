@@ -4,7 +4,6 @@ import useWebSocket from "react-use-websocket";
 import TitleRow from "./TitleRow";
 import { Container, TableContainer } from "./styles";
 import PriceLevelRow from "./PriceLevelRow";
-import Spread from "../Spread";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import {
   addAsks,
@@ -18,8 +17,6 @@ import Loader from "../Loader";
 import DepthVisualizer from "../DepthVisualizer";
 import { PriceLevelRowContainer } from "./PriceLevelRow/styles";
 import { formatNumber } from "../../helpers";
-
-// const WSS_FEED_URL: string = "wss://www.cryptofacilities.com/ws/v1";
 
 const WSS_FEED_URL: string = "wss://ws.bitmex.com/realtime";
 
@@ -180,7 +177,6 @@ const OrderBook: FunctionComponent<OrderBookProps> = ({
             )}
             <div>{buildPriceLevels(bids, OrderType.BIDS)}</div>
           </TableContainer>
-          <Spread bids={bids} asks={asks} />
           <TableContainer>
             <TitleRow windowWidth={windowWidth} reversedFieldsOrder={true} />
             <div>{buildPriceLevels(asks, OrderType.ASKS)}</div>
