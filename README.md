@@ -13,7 +13,6 @@ An Order Book app built with React/Typescript and powered by WebSockets.
 ### III. Toggle Feed Button
 
 1. Toggles the selected market between PI_XBTUSD and PI_ETHUSD.
-2. Supports dynamic grouping logic - handles groupings for XBT (0.5, 1, 2.5) and groupings for ETH (0.05, 0.1, 0.25).
 
 ### IV. Kill Feed Button
 
@@ -22,7 +21,7 @@ An Order Book app built with React/Typescript and powered by WebSockets.
 
 ### Demo
 
-:star: [orderbook-mihailgaberov.vercel.app](https://orderbook-mihailgaberov.vercel.app/) :star:
+:star: https://hollaex-order.vercel.app/ :star:
 
 ### Running the app locally
 
